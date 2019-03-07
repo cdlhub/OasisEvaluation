@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # debian VM for Ansible uneder Windows
   config.vm.define "ansible-sys", autostart: false do |ansible|
-    ansible.vm.box = "geerlingguy/debian1804"
+    ansible.vm.box = "geerlingguy/ubuntu1804"
     ansible.vm.network "private_network", ip: "192.168.1.10"
     ansible.vm.network "forwarded_port", guest: 22, host: 2210, id:"ssh", protocol: "tcp"
     ansible.vm.hostname = "ansible-sys"
