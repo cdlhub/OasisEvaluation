@@ -1,0 +1,221 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+
+    - name: install aptitude [debian family]
+      apt:
+        name: aptitude
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: update package cache
+      package: 
+        update_cache: yes
+
+  tasks:
+
+    - include_role:
+      name: docker-ce
+    # - name: create docker-compose install directory
+    #   file:
+    #     path: /usr/local/bin/docker-compose
+    #     mode: "+x"
+    #     state: directory
+
+    - name: download docker-compose
+      shell: "curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose"
+      args:
+        warn: no
+
+    - name: set docker-compose executable mode
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: "+x"
+
+    # Install MSSQL tools
+
+    - name: install required packages for mssql
+      package:
+        name: curl
+        state: present
+
+    # Debian
+    - name: import the public repository gpg keys [Debian]
+      shell: "curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -"
+      args:
+        warn: no
+      when: ansible_os_family == "Debian"
+
+    - name: register the microsoft repository [Debian]
+      shell: "curl https://packages.microsoft.com/config/{{ ansible_distribution|lower }}/{{ ansible_distribution_version }}/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list"
+      args:
+        warn: no
+      when: ansible_os_family == "Debian"
+
+    - name: update repository cache
+      package: 
+        update_cache: yes
+
+    - name: install mssql tools [Debian]
+      apt:
+        name: ['mssql-tools', 'unixodbc-dev']
+        update_cache: yes
+        state: present
+      environment:
+        ACCEPT_EULA: "Y"
+      when: ansible_os_family == "Debian"
+
+    # CentOS
+    - name: register the microsoft repository [CentOS]
+      shell: "curl https://packages.microsoft.com/config/{{ ansible_distribution|lower }}/{{ ansible_distribution_version }}/prod.repo > /etc/yum.repos.d/msprod.repo"
+      when: ansible_os_family == "RedHat"
+
+    - name: update repository cache
+      package: 
+        update_cache: yes
+
+    - name: remove old mssql packages [CentOS]
+      yum:
+        name: ['mssql-tools', 'unixODBC-utf16-devel']
+        state: absent
+      when: ansible_os_family == "RedHat"
+
+    - name: install mssql tools [CentOS]
+      yum:
+        name: ['mssql-tools', 'unixODBC-devel']
+        update_cache: yes
+        state: present
+      environment:
+        ACCEPT_EULA: "Y"
+      when: ansible_os_family == "RedHat"
+
+    # All OS
+    - name: add /opt/mssql-tools/bin/ to PATH environment variable
+      lineinfile:
+        path: "/home/{{ admin_user }}/{{ item }}"
+        line: 'export PATH="$PATH:/opt/mssql-tools/bin"'
+        insertafter: EOF
+        owner: "{{ admin_user }}"
+        group: "{{ admin_user }}"
+        state: present
+        create: yes
+      with_items:
+        - .bash_profile
+        - .bashrc
+
+    - name: export PATH environment variable
+      shell: "source /home/{{ admin_user }}/.bashrc"
+      args:
+        executable: /bin/bash
+
+    # OASIS Configuration
+
+    - name: create oasis directories
+      file:
+        path: "/home/{{ admin_user }}/{{ item }}"
+        owner: "{{ admin_user }}"
+        group: "{{ admin_user }}"
+        state: directory
+      with_items:
+        - download
+        - upload
+        - model_data
+        - flamingo_share
+
+    - name: configure .flamingo_share_credentials file
+      template:
+        src: files/flamingo_share_credentials.j2
+        dest: "/home/{{ admin_user }}/.flamingo_share_credentials"
+        owner: "{{ admin_user }}"
+        group: "{{ admin_user }}"
+        mode: 0600
+  
+    - name: install cifs-utils
+      package:
+        name: cifs-utils
+        state: present
+
+    - name: mount flamingo share
+      mount:
+        src: "//{{ sql_server_ip }}/flamingo_share"
+        path: "/home/{{ admin_user }}/flamingo_share"
+        fstype: cifs
+        opts: "uid=1000,gid=1000,rw,credentials=/home/{{ admin_user }}/.flamingo_share_credentials,iocharset=utf8,dir_mode=0775,noperm"
+        state: mounted
+        backup: yes
+
+    - name: install git
+      package:
+        name: git
+        state: present
+
+    - name: install oasis repos
+      git:
+        repo: "git://github.com/OasisLMF/{{ item.repo }}.git"
+        version: "{{ item.tag }}"
+        dest: "/home/{{ admin_user }}/{{ item.repo }}"
+        force: yes
+      with_items:
+        - { repo: OasisUI, tag: "{{ flamingo_release_tag }}" }
+        - { repo: OasisPlatform, tag: "{{ oasis_release_tag }}" }
+
+    - name: copy oasis environment files
+      command: "cp -rf /home/{{ admin_user }}/OasisUI/Files /home/{{ admin_user }}/flamingo_share/"
+
+    - name: create sql database
+      command: "/home/{{ admin_user }}/OasisUI/SQLFiles/create_db.py -s {{ sql_server_ip }} -p {{ sql_sa_pass }} -n {{ sql_db_env_name }} -l {{ sql_db_env_pass }} -f {{ flamingo_share_loc }} -F {{ shiny_files_loc }} -v {{ oasis_release_tag }}"
+      args:
+        chdir: "/home/{{ admin_user }}"
+
+    - name: copy generic yml files
+      copy:
+        src: "/home/{{ admin_user }}/{{ item.repo }}/build/{{ item.file }}"
+        remote_src: yes
+        dest: "/home/{{ admin_user }}"
+        owner: "{{ admin_user }}"
+        group: "{{ admin_user }}"
+      with_items:
+        - { repo: OasisPlatform, file: oasisapi.yml }
+        - { repo: OasisUI, file: flamingo.yml }
+
+    - name: update yml files to spacific oasis environment
+      replace:
+        path: "/home/{{ admin_user }}/{{ item.file }}"
+        regexp: "{{ item.regexp }}"
+        replace: "{{ item.replace }}"
+        backup: yes
+      with_items:
+        - { file: oasisapi.yml, regexp: __oasis_release_tag__, replace: "{{ oasis_release_tag }}" }
+        - { file: flamingo.yml, regexp: __ip_address__, replace: "{{ flamingo_server_ip }}" }
+        - { file: flamingo.yml, regexp: __flamingo_release_tag__, replace: "{{ flamingo_release_tag }}" }
+        - { file: flamingo.yml, regexp: __sql_ip__, replace: "{{ sql_server_ip }}" }
+        - { file: flamingo.yml, regexp: __sql_port__, replace: "{{ sql_server_port }}" }
+        - { file: flamingo.yml, regexp: __sql_env_name__, replace: "{{ sql_db_env_name }}" }
+        - { file: flamingo.yml, regexp: __sql_env_pass__, replace: "{{ sql_db_env_pass }}" }
+
+    - name: pull flamingo shiny image from dockerhub
+      docker_image:
+        name: coreoasis/flamingo_shiny
+        tag: "{{ flamingo_release_tag }}"
+        pull: yes
+
+    # TODO: replace docker-compose by ansible
+    # SEE: https://www.ansible.com/blog/six-ways-ansible-makes-docker-compose-better
+    - name: runn oasis environment specific yml files to start docker containers
+      command: "docker-compose -f /home/{{ admin_user }}/{{ item }} up -d"
+      with_items:
+        - oasisapi.yml
+        - flamingo.yml
+
+  handlers:
+
+    - name: restart docker-ce service
+      systemd:
+        name: docker
+        daemon_reload: yes
+        state: restarted
+        enabled: yes
