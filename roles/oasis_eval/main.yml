@@ -1,0 +1,32 @@
+- name: install git
+  package:
+    name: git
+    state: present
+
+- name: install oasis repos
+  git:
+    repo: "git://github.com/OasisLMF/{{ item.repo }}.git"
+    version: "{{ item.tag }}"
+    depth: 1
+    dest: "/home/{{ admin_user }}/{{ item.repo }}"
+    force: yes
+  with_items:
+    - { repo: "{{ git_api }}", tag: "{{ branch_api }}" }
+    - { repo: "{{ git_ui }}", tag: "{{ branch_ui }}" }
+    - { repo: "{{ git_piwind }}", tag: "{{ branch_piwind }}" }
+
+- name: run oasis api
+  shell: "OASIS_MODEL_DATA_DIR=/home/{{ admin_user }}/{{ git_piwind }}; docker-compose -f /home/{{ admin_user }}/{{ git_api }}/docker-compose.yml up -d"
+
+- name: create docker network shiny-net
+  docker_network:
+    name: "{{ docker_network }}"
+
+- name: pull container coreoasis/oasisui_app
+  docker_image:
+    name: "{{ docker_ui }}"
+    tag: "{{ docker_tag_ui }}"
+    pull: yes
+
+- name: run oasis ui
+  shell: "docker-compose -f /home/{{ admin_user }}/{{ git_ui }}/docker-compose.yml up -d"

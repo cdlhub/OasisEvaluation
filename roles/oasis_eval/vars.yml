@@ -1,0 +1,14 @@
+admin_user: "{{ ansible_distribution|lower }}"
+
+git_ui: OasisUI
+branch_ui: develop
+
+git_api: OasisPlatform
+branch_api: "beta-release/1.0.0"
+
+git_piwind: OasisPiWind
+branch_piwind: "1.0.0-rc3"
+
+docker_network: "shiny-net"
+docker_ui: "coreoasis/oasisui_app"
+docker_tag_ui: "1.0.0"
