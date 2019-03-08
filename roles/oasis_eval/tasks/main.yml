@@ -26,7 +26,6 @@
   docker_image:
     name: "{{ docker_ui }}"
     tag: "{{ docker_tag_ui }}"
-    pull: yes
 
 - name: run oasis ui
   shell: "docker-compose -f /home/{{ admin_user }}/{{ git_ui }}/docker-compose.yml up -d"
