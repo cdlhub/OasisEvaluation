@@ -21,7 +21,7 @@
   register: add_key
   ignore_errors: true
 
-- name: add docker apt key if failed
+- name: doanload and install docker apt key if apt_key module failed
   shell: "curl -sSL https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg | sudo apt-key add -"
   args:
     warn: no

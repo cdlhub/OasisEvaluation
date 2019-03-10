@@ -4,7 +4,7 @@
 
   pre_tasks:
 
-    - name: install aptitude [debian family]
+    - name: install aptitude
       apt:
         name: aptitude
         state: present
