@@ -15,7 +15,7 @@
     - { repo: "{{ git_ui }}", tag: "{{ branch_ui }}" }
     - { repo: "{{ git_piwind }}", tag: "{{ branch_piwind }}" }
 
-- name: run oasis api
+- name: run oasis api container
   shell: "OASIS_MODEL_DATA_DIR=/home/{{ admin_user }}/{{ git_piwind }}; docker-compose -f /home/{{ admin_user }}/{{ git_api }}/docker-compose.yml up -d"
 
 - name: create docker network shiny-net
