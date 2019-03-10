@@ -3,6 +3,11 @@
     name: docker-ce
     state: present
 
+- name: install docker-py
+  pip:
+    name: docker-py
+    state: present
+
 - name: setting docker service deamon
   lineinfile:
     path: /lib/systemd/system/docker.service
