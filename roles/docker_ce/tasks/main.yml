@@ -22,4 +22,4 @@
   when: ansible_facts['os_family']|lower == 'debian'
 
 - name: install docker-ce
-  import_tasks: docker-ce.yml
+  import_tasks: docker_ce.yml
