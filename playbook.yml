@@ -17,6 +17,9 @@
   tasks:
 
     - include_role:
+        name: pip
+        
+    - include_role:
         name: docker_ce
     
     - include_role:
