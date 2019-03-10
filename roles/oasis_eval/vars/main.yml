@@ -4,7 +4,7 @@ git_ui: OasisUI
 branch_ui: develop
 
 git_api: OasisPlatform
-branch_api: "beta-release/1.0.0"
+branch_api: "1.0.0"
 
 git_piwind: OasisPiWind
 branch_piwind: "1.0.0-rc3"
