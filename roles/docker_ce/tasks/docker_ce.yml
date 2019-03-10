@@ -20,11 +20,13 @@
   command: "docker run hello-world"
   register: docker_hello_world
 
-- name: log docker status stdout
-  debug: "{{ docker_hello_world.stdout }}"
+- name: log docker status - stdout
+  debug: 
+    msg: "{{ docker_hello_world.stdout }}"
 
-- name: log docker status stderr
-  debug: "{{ docker_hello_world.stderr }}"
+- name: log docker status - stderr
+  debug: 
+    msg: "{{ docker_hello_world.stderr }}"
 
 - name: ensure group docker exists
   group:
