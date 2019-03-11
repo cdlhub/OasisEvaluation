@@ -23,7 +23,7 @@
     OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_piwind }}"
   register: oasis_api_output
 
-- name: docker-compose - debug
+- name: docker-compose debug - oasis api
   debug:
     var: oasis_api_output
 
@@ -37,4 +37,11 @@
     tag: "{{ docker_tag_ui }}"
 
 - name: run oasis ui container
-  shell: "docker-compose -f /home/{{ admin_user }}/{{ git_ui }}/docker-compose.yml up -d"
+  # shell: "docker-compose -f /home/{{ admin_user }}/{{ git_ui }}/docker-compose.yml up -d"
+  docker_service:
+    project_src: "/home/{{ admin_user }}/{{ git_ui }}"
+  register: oasis_ui_output
+
+- name: docker-compose debug - oasis ui
+  debug:
+    var: oasis_ui_output
