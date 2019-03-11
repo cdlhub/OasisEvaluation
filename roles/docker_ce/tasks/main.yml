@@ -26,5 +26,5 @@
 - name: install docker-ce
   import_tasks: docker_ce.yml
 
-- name: install docker-compose
-  import_tasks: docker_compose.yml
+# - name: install docker-compose
+#   import_tasks: docker_compose.yml
