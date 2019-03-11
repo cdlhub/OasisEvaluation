@@ -1,9 +1,0 @@
-- name: download docker-compose
-  shell: "curl -L https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose"
-  args:
-    warn: no
-
-- name: set docker-compose executable mode
-  file:
-    path: /usr/local/bin/docker-compose
-    mode: "+x"
