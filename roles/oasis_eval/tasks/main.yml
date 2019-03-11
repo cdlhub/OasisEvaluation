@@ -16,7 +16,16 @@
     - { repo: "{{ git_piwind }}", tag: "{{ branch_piwind }}" }
 
 - name: run oasis api container
-  shell: "OASIS_MODEL_DATA_DIR=/home/{{ admin_user }}/{{ git_piwind }}; docker-compose -f /home/{{ admin_user }}/{{ git_api }}/docker-compose.yml up -d"
+#   shell: "OASIS_MODEL_DATA_DIR=/home/{{ admin_user }}/{{ git_piwind }}; docker-compose -f /home/{{ admin_user }}/{{ git_api }}/docker-compose.yml up -d"
+  docker_service:
+    project_src: "/home/{{ admin_user }}/{{ git_api }}"
+  environment:
+    OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_piwind }}"
+  register: oasis_api_output
+
+- name: docker-compose - debug
+  debug:
+    var: oasis_api_output
 
 - name: create docker network shiny-net
   docker_network:
@@ -27,5 +36,5 @@
     name: "{{ docker_ui }}"
     tag: "{{ docker_tag_ui }}"
 
-- name: run oasis ui
+- name: run oasis ui container
   shell: "docker-compose -f /home/{{ admin_user }}/{{ git_ui }}/docker-compose.yml up -d"
