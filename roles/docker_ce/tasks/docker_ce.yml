@@ -32,13 +32,9 @@
     image: hello-world
   register: docker_hello_world
 
-- name: log docker status - stdout
+- name: log hello-world container
   debug: 
-    msg: "{{ docker_hello_world.stdout }}"
-
-- name: log docker status - stderr
-  debug: 
-    msg: "{{ docker_hello_world.stderr }}"
+    msg: "{{ docker_hello_world }}"
 
 - name: ensure group docker exists
   group:
