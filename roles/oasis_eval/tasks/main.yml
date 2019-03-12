@@ -1,3 +1,13 @@
+- name: setup environment variables for piwind model
+  template:
+    src: files/env_piwind.j2
+    dest: "/etc/profile.d/env_piwind.sh"
+
+- name: export environment variables
+  shell: "source /etc/profile.d/env_piwind.sh"
+  args:
+    executable: /bin/bash
+
 - name: install git
   package:
     name: git
@@ -11,16 +21,16 @@
     dest: "/home/{{ admin_user }}/{{ item.repo }}"
     force: yes
   with_items:
-    - { user: "{{ git_user_api }}", repo: "{{ git_repo_api }}", tag: "{{ git_version_api }}" }
-    - { user: "{{ git_user_ui }}", repo: "{{ git_repo_ui }}", tag: "{{ git_version_ui }}" }
-    - { user: "{{ git_user_piwind }}", repo: "{{ git_repo_piwind }}", tag: "{{ git_version_piwind }}" }
+    - { user: "{{ git_user_api }}", repo: "{{ git_repo_api }}", version: "{{ git_version_api }}" }
+    - { user: "{{ git_user_ui }}", repo: "{{ git_repo_ui }}", version: "{{ git_version_ui }}" }
+    - { user: "{{ git_user_piwind }}", repo: "{{ git_repo_piwind }}", version: "{{ git_version_piwind }}" }
   
 - name: run oasis api container
   docker_service:
-    project_src: "/home/{{ admin_user }}/{{ git_api }}"
+    project_src: "/home/{{ admin_user }}/{{ git_repo_api }}"
     pull: true
-  environment:
-    OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_piwind }}"
+  # environment:
+  #   OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_repo_piwind }}"
   register: oasis_api_output
 
 # - name: docker-compose debug - oasis api
@@ -33,7 +43,7 @@
 
 - name: run oasis ui container
   docker_service:
-    project_src: "/home/{{ admin_user }}/{{ git_ui }}"
+    project_src: "/home/{{ admin_user }}/{{ git_repo_ui }}"
     pull: true
   register: oasis_ui_output
 
