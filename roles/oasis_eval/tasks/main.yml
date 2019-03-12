@@ -23,9 +23,9 @@
     OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_piwind }}"
   register: oasis_api_output
 
-- name: docker-compose debug - oasis api
-  debug:
-    var: oasis_api_output
+# - name: docker-compose debug - oasis api
+#   debug:
+#     var: oasis_api_output
 
 - name: create docker network shiny-net
   docker_network:
@@ -42,6 +42,6 @@
     project_src: "/home/{{ admin_user }}/{{ git_ui }}"
   register: oasis_ui_output
 
-- name: docker-compose debug - oasis ui
-  debug:
-    var: oasis_ui_output
+# - name: docker-compose debug - oasis ui
+#   debug:
+#     var: oasis_ui_output
