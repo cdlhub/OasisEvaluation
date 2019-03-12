@@ -11,4 +11,4 @@ branch_piwind: "1.0.0-rc3"
 
 docker_network: "shiny-net"
 docker_ui: "coreoasis/oasisui_app"
-docker_tag_ui: "1.0.0"
+docker_tag_ui: "latest"
