@@ -10,6 +10,6 @@ git_version_api: "add-restart-always"
 
 git_user_piwind: OasisLMF
 git_repo_piwind: OasisPiWind
-git_version_piwind: "1.0.0-rc3"
+git_version_piwind: "1.0.1"
 
 docker_network: "shiny-net"
