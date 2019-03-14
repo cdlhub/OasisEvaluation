@@ -27,8 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu.vm.box = "geerlingguy/ubuntu1804"
     ubuntu.vm.network "private_network", ip: "192.168.2.200"
     ubuntu.vm.network "forwarded_port", guest: 22, host: 2220, id:"ssh", protocol: "tcp"
-    ubuntu.vm.network "forwarded_port", guest: 8000, host: 8000, id:"http", protocol: "tcp"
-    ubuntu.vm.network "forwarded_port", guest: 8080, host: 8080, id:"http", protocol: "tcp"
+    ubuntu.vm.network "forwarded_port", guest: 8000, host: 8000, id:"swagger", protocol: "tcp"
+    ubuntu.vm.network "forwarded_port", guest: 8080, host: 8080, id:"ui", protocol: "tcp"
     ubuntu.vm.hostname = "oasis-eval-ubuntu"
     ubuntu.vm.provider "virtualbox" do |vb|
         vb.name = "OASIS_UBUNTU"
@@ -47,8 +47,8 @@ end
     centos.vm.box = "geerlingguy/centos7"
     centos.vm.network "private_network", ip: "192.168.2.250"
     centos.vm.network "forwarded_port", guest: 22, host: 2225, id:"ssh", protocol: "tcp"
-    centos.vm.network "forwarded_port", guest: 8000, host: 8000, id:"http", protocol: "tcp"
-    centos.vm.network "forwarded_port", guest: 8080, host: 8080, id:"http", protocol: "tcp"
+    centos.vm.network "forwarded_port", guest: 8000, host: 8000, id:"swagger", protocol: "tcp"
+    centos.vm.network "forwarded_port", guest: 8080, host: 8080, id:"ui", protocol: "tcp"
     centos.vm.hostname = "oasis-eval-centos"
     centos.vm.provider "virtualbox" do |vb|
         vb.name = "OASIS_CENTOS"
