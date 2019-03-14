@@ -1,13 +1,3 @@
-- name: setup environment variables for piwind model
-  template:
-    src: files/env_piwind.j2
-    dest: "/etc/profile.d/env_piwind.sh"
-
-- name: export environment variables
-  shell: "source /etc/profile.d/env_piwind.sh"
-  args:
-    executable: /bin/bash
-
 - name: install git
   package:
     name: git
@@ -39,8 +29,8 @@
   docker_service:
     project_src: "/home/{{ admin_user }}/{{ git_repo_api }}"
     pull: yes
-  # environment:
-  #   OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_repo_piwind }}"
+  environment:
+    OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_repo_piwind }}"
   register: oasis_api_output
 
 # - name: docker-compose debug - oasis api
