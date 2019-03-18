@@ -15,15 +15,15 @@
     - { user: "{{ git_user_ui }}", repo: "{{ git_repo_ui }}", version: "{{ git_version_ui }}" }
     - { user: "{{ git_user_piwind }}", repo: "{{ git_repo_piwind }}", version: "{{ git_version_piwind }}" }
 
-- name: pull oasis api docker images [bypass docker-compose bug - https://github.com/ansible/ansible/issues/47978 - remove this task when fixed in docker-compose v1.24]
+- name: pull oasis api docker images
   docker_image:
-    name: "{{ item }}"
+    name: "{{ item.image }}{{ item.tag }}"
   with_items: 
-    - "coreoasis/api_server:latest"
-    - "coreoasis/model_worker:latest"
-    - "mysql"
-    - "rabbitmq:3-management"
-    - "iserko/docker-celery-flower"
+    - { image: "{{ docker_img_api_server }}", tag: ":{{ docker_tag_api_server }}" }
+    - { image: "{{ docker_img_model_worker }}", tag: ":{{ docker_tag_model_worker }}" }
+    - { image: "mysql", tag: "" }
+    - { image: "rabbitmq", tag: ":3-management" }
+    - { image: "iserko/docker-celery-flower", tag: "" }
 
 - name: run oasis api container
   docker_service:
@@ -41,15 +41,12 @@
   docker_network:
     name: "{{ docker_network }}"
 
-- name: pull oasis ui app docker image
+- name: pull oasis ui docker images
   docker_image:
-    name: "coreoasis/oasisui_app:latest"
-
-- name: pull oasis ui docker images [bypass docker-compose bug - https://github.com/ansible/ansible/issues/47978 - remove this task when fixed in docker-compose v1.24]
-  docker_image:
-    name: "{{ item }}"
+    name: "{{ item.image }}{{ item.tag }}"
   with_items: 
-    - "coreoasis/oasisui_proxy:latest"
+    - { image: "{{ docker_img_oasisui_app }}", tag: ":{{ docker_tag_oasisui_app }}" }
+    - { image: "{{ docker_img_oasisui_proxy }}", tag: ":{{ docker_tag_oasisui_proxy }}" }
 
 - name: run oasis ui container
   docker_service:
