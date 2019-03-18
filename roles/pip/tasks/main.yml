@@ -1,5 +1,5 @@
 - name: install python and pip
-  apt:
+  package:
     name: ['python-pip', 'python-dev']
     state: present
 
