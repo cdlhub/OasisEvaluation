@@ -2,7 +2,7 @@ admin_user: "{{ ansible_distribution|lower }}"
 
 git_user_ui: OasisLMF
 git_repo_ui: OasisUI
-git_version_ui: develop
+git_version_ui: "1.0.1"
 
 git_user_api: cdlhub
 git_repo_api: OasisPlatform
@@ -13,3 +13,12 @@ git_repo_piwind: OasisPiWind
 git_version_piwind: "1.0.1"
 
 docker_network: "shiny-net"
+
+docker_img_api_server: "coreoasis/api_server"
+docker_tag_api_server: "1.0.1"
+
+docker_img_model_worker: "coreoasis/model_worker"
+docker_tag_model_worker: "1.0.1"
+
+docker_img_oasisui_app: "coreoasis/oasisui_app"
+docker_tag_oasisui_app: "1.0.1"
