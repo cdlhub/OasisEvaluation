@@ -25,10 +25,19 @@
     - { user: "", image: "rabbitmq", tag: ":3-management" }
     - { user: "iserko/", image: "docker-celery-flower", tag: "" }
 
+- name: update image versions in api docker-compose.yml
+  lineinfile:
+    path: "/home/{{ admin_user }}/{{ git_repo_ui }}/docker-compose.yml"
+    regexp: '^(.*)coreoasis/{{ item.image }}:latest'
+    line: '\1{{ item.user }}{{ item.image }}{{ item.tag }}'
+    backrefs: yes
+  with_items:
+    - { user: "{{ docker_usr_api_server }}/", image: "{{ docker_img_api_server }}", tag: ":{{ docker_tag_api_server }}" }
+    - { user: "{{ docker_usr_model_worker }}/", image: "{{ docker_img_model_worker }}", tag: ":{{ docker_tag_model_worker }}" }
+  
 - name: run oasis api container
   docker_service:
     project_src: "/home/{{ admin_user }}/{{ git_repo_api }}"
-    pull: yes
   environment:
     OASIS_MODEL_DATA_DIR: "/home/{{ admin_user }}/{{ git_repo_piwind }}"
   register: oasis_api_output
@@ -48,10 +57,19 @@
     - { user: "{{ docker_usr_oasisui_app }}/", image: "{{ docker_img_oasisui_app }}", tag: ":{{ docker_tag_oasisui_app }}" }
     - { user: "{{ docker_usr_oasisui_proxy }}/", image: "{{ docker_img_oasisui_proxy }}", tag: ":{{ docker_tag_oasisui_proxy }}" }
 
+- name: update image versions in ui docker-compose.yml
+  lineinfile:
+    path: "/home/{{ admin_user }}/{{ git_repo_ui }}/docker-compose.yml"
+    regexp: '^(.*)coreoasis/{{ item.image }}:latest'
+    line: '\1{{ item.user }}{{ item.image }}{{ item.tag }}'
+    backrefs: yes
+  with_items:
+    - { user: "{{ docker_usr_oasisui_app }}/", image: "{{ docker_img_oasisui_app }}", tag: ":{{ docker_tag_oasisui_app }}" }
+    - { user: "{{ docker_usr_oasisui_proxy }}/", image: "{{ docker_img_oasisui_proxy }}", tag: ":{{ docker_tag_oasisui_proxy }}" }
+
 - name: run oasis ui container
   docker_service:
     project_src: "/home/{{ admin_user }}/{{ git_repo_ui }}"
-    pull: yes
   register: oasis_ui_output
 
 # - name: docker-compose debug - oasis ui
