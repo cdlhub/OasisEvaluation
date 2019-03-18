@@ -17,13 +17,13 @@
 
 - name: pull oasis api docker images
   docker_image:
-    name: "{{ item.image }}{{ item.tag }}"
+    name: "{{ item.user }}{{ item.image }}{{ item.tag }}"
   with_items: 
-    - { image: "{{ docker_img_api_server }}", tag: ":{{ docker_tag_api_server }}" }
-    - { image: "{{ docker_img_model_worker }}", tag: ":{{ docker_tag_model_worker }}" }
-    - { image: "mysql", tag: "" }
-    - { image: "rabbitmq", tag: ":3-management" }
-    - { image: "iserko/docker-celery-flower", tag: "" }
+    - { user: "{{ docker_usr_api_server }}/", image: "{{ docker_img_api_server }}", tag: ":{{ docker_tag_api_server }}" }
+    - { user: "{{ docker_usr_model_worker }}/", image: "{{ docker_img_model_worker }}", tag: ":{{ docker_tag_model_worker }}" }
+    - { user: "", image: "mysql", tag: "" }
+    - { user: "", image: "rabbitmq", tag: ":3-management" }
+    - { user: "iserko/", image: "docker-celery-flower", tag: "" }
 
 - name: run oasis api container
   docker_service:
@@ -43,10 +43,10 @@
 
 - name: pull oasis ui docker images
   docker_image:
-    name: "{{ item.image }}{{ item.tag }}"
+    name: "{{item.user }}{{ item.image }}{{ item.tag }}"
   with_items: 
-    - { image: "{{ docker_img_oasisui_app }}", tag: ":{{ docker_tag_oasisui_app }}" }
-    - { image: "{{ docker_img_oasisui_proxy }}", tag: ":{{ docker_tag_oasisui_proxy }}" }
+    - { user: "{{ docker_usr_oasisui_app }}/", image: "{{ docker_img_oasisui_app }}", tag: ":{{ docker_tag_oasisui_app }}" }
+    - { user: "{{ docker_usr_oasisui_proxy }}/", image: "{{ docker_img_oasisui_proxy }}", tag: ":{{ docker_tag_oasisui_proxy }}" }
 
 - name: run oasis ui container
   docker_service:
