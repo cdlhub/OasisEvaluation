@@ -37,9 +37,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "playbook.yml"
       # ansible.verbose = true
-      ansible.inventory_path = "staging"
+      ansible.inventory_path = "staging-ubuntu"
       ansible.limit = 'all'
-      ansible.raw_arguments  = "--private-key=~/.vagrant.d/insecure_private_key"
     end
   end
 
@@ -57,9 +56,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "playbook.yml"
         # ansible.verbose = true
-        ansible.inventory_path = "staging"
+        ansible.inventory_path = "staging-centos"
         ansible.limit = 'all'
-        ansible.raw_arguments  = "--private-key=~/.vagrant.d/insecure_private_key"
     end
   end
 
@@ -69,12 +67,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.memory = "2048"
     vb.cpus = 2
   end
-
-  # config.vm.provision "ansible" do |ansible|
-  #   ansible.compatibility_mode = "2.0"
-  #   ansible.playbook = "playbook.yml"
-  #   ansible.inventory_path = "staging"
-  #   ansible.limit = 'all'
-  #   ansible.raw_arguments  = "--private-key=~/.vagrant.d/insecure_private_key"
-  # end
 end
