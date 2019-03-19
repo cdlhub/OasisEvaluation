@@ -22,6 +22,16 @@ PiWind is an example Toy model so only requires a small to medium sized Instance
   
 ## Installation Steps
 
+From within Oasis server using Ansible (compatible with Debian, Ubuntu, CentOS, RedHat):
+
+```sh
+git clone git@github.com:OasisLMF/OasisEvaluation.git
+cd OasisEvaluation
+ansible-playbook --connection=local --inventory 127.0.0.1, playbook.yml
+```
+
+From within Oasis server using `install.sh` shell script (compatible with Linux):
+
 1) install git, docker and docker-compose
 
 For example on an Ubuntu/Debian based Linux system use:
