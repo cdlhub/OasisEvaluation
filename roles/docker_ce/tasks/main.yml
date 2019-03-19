@@ -1,6 +1,6 @@
 # Depends on pip: see: pip role
 
-- name: install aptitude
+- name: install aptitude [debian family]
   apt:
     name: aptitude
     state: present
