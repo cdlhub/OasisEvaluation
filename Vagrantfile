@@ -41,7 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ansible.limit = 'all'
       ansible.raw_arguments  = "--private-key=~/.vagrant.d/insecure_private_key"
     end
-end
+  end
 
   config.vm.define "oasis-centos", autostart: false do |centos|
     centos.vm.box = "geerlingguy/centos7"
@@ -52,6 +52,14 @@ end
     centos.vm.hostname = "oasis-eval-centos"
     centos.vm.provider "virtualbox" do |vb|
         vb.name = "OASIS_CENTOS"
+    end
+    centos.vm.provision "ansible" do |ansible|
+        ansible.compatibility_mode = "2.0"
+        ansible.playbook = "playbook.yml"
+        # ansible.verbose = true
+        ansible.inventory_path = "staging"
+        ansible.limit = 'all'
+        ansible.raw_arguments  = "--private-key=~/.vagrant.d/insecure_private_key"
     end
   end
 
