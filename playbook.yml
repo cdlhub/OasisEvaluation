@@ -4,14 +4,16 @@
 
   pre_tasks:
 
-    - name: install aptitude
+    - name: install aptitude [debian family]
       apt:
         name: aptitude
         state: present
-      when: ansible_os_family == "Debian"
+      when: ansible_facts['os_family']|lower == 'debian'
 
-    - name: update package cache
-      package: 
+    - name: upgrade all packages to latest version
+      package:
+        name: "*"
+        state: latest
         update_cache: yes
 
   tasks:
