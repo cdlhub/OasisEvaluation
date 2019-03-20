@@ -2,11 +2,33 @@
 - hosts: all
   become: true
   gather_facts: False
-  
+  roles:
+    - pip
+    - docker_ce
+    - oasis_eval
+
   pre_tasks:
 
-    - name: install python
-      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    - name: install python [debian family]
+      raw: |
+        family=$(cat /etc/os-release | grep ID_LIKE | cut -d= -f2);
+        if [ "$family" == "debian" ]; then
+          test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+        fi
+      args:
+        executable: /bin/bash
+
+    - name: install python [redhat family]
+      raw: |
+        family=$(cat /etc/os-release | grep ID_LIKE | cut -d= -f2);
+        if [ "$family" == "redhat" ]; then
+          test -e /usr/bin/python || (yum -y update && yum install -y python-minimal)
+        fi
+      args:
+        executable: /bin/bash
+
+    - name: install python [redhat family]
+      raw: test -e /usr/bin/python || (yum -y update && yum install -y python-minimal)
 
     - name: gathering facts
       setup:
@@ -22,14 +44,3 @@
         name: "*"
         state: latest
         update_cache: yes
-
-  tasks:
-
-    - include_role:
-        name: pip
-
-    - include_role:
-        name: docker_ce
-
-    - include_role:
-        name: oasis_eval
