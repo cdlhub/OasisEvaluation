@@ -1,6 +1,6 @@
 <img src="https://oasislmf.org/packages/oasis_theme_package/themes/oasis_theme/assets/src/oasis-lmf-colour.png" alt="Oasis LMF logo" width="250"/>
 
-# Oasis Evaluation 1.0.0 Release 
+# Oasis Evaluation 1.0.0 Release
 
 The Oasis Platform 1.0.0 release includes a full API for operating catastrophe models and a general consolidation of the platform architecture.
 Windows SQL server is no longer a strict requirement.
