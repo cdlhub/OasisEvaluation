@@ -1,8 +1,15 @@
 ---
 - hosts: all
   become: true
-
+  gather_facts: False
+  
   pre_tasks:
+
+    - name: install python
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+    - name: gathering facts
+      setup:
 
     - name: install aptitude [debian family]
       apt:
