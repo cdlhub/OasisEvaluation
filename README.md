@@ -11,8 +11,16 @@ A Linux based installation is the main focus of this example Evaluation deployme
 Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
 
 ## Install Prerequisites
+
+### Oasis host or server
+
 * Host Operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
-* For this example we’ve used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script
+* For this example we’ve used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script.
+
+### Control machine to provision Oasis server
+
+* [Vagrant](https://www.vagrantup.com/) is used for test or development environment.
+* [Ansible](https://www.ansible.com/) serves as the provisioning tool. It is not available on Windows. However, the solution provides a Linux virtual machine with Ansible installed.
 
 ## Cloud Provisioning 
 PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of the models hosted on the platform. 
