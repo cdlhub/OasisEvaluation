@@ -25,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "oasis-centos", autostart: false do |centos|
     centos.vm.box = "geerlingguy/centos7"
-    centos.vm.network "private_network", ip: "192.168.2.250"
+    centos.vm.network "private_network", ip: "192.168.2.25"
     centos.vm.network "forwarded_port", guest: 22, host: 2225, id:"ssh", protocol: "tcp"
     centos.vm.network "forwarded_port", guest: 8000, host: 8000, id:"swagger", protocol: "tcp"
     centos.vm.network "forwarded_port", guest: 8080, host: 8080, id:"ui", protocol: "tcp"
@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "oasis-ubuntu", autostart: false do |ubuntu|
     ubuntu.vm.box = "geerlingguy/ubuntu1804"
-    ubuntu.vm.network "private_network", ip: "192.168.2.200"
+    ubuntu.vm.network "private_network", ip: "192.168.2.20"
     ubuntu.vm.network "forwarded_port", guest: 22, host: 2220, id:"ssh", protocol: "tcp"
     ubuntu.vm.network "forwarded_port", guest: 8000, host: 8000, id:"swagger", protocol: "tcp"
     ubuntu.vm.network "forwarded_port", guest: 8080, host: 8080, id:"ui", protocol: "tcp"
