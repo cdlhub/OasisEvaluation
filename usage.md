@@ -13,6 +13,7 @@ The solution can be used from a Windows, macOS, or Linux control machine. You ca
 - [Install Oasis on remote servers using Ansible](#install-oasis-on-remote-servers-using-ansible)
     - [Local control OS: macOS, Linux](#local-control-os-macos-linux)
     - [Local control OS: Windows](#local-control-os-windows)
+- [Configuration](#configuration)
 
 <!-- /TOC -->
 
@@ -240,3 +241,45 @@ Open a browser on your local system at `http://<remote-ip>:8080`.
     ```
 
 Exit from ansible virtual machine (`exit`), and open a browser on your local system at `http://<remote-ip>:8080`.
+
+## Configuration
+
+You can specify which version of Oasis repositories and containers you want to install by editing `roles/oasis_eval/vars/main.yml`.
+
+```yml
+admin_user: "{{ ansible_distribution|lower }}"
+
+version: "1.0.1"
+git_user: "OasisLMF"
+docker_user: "coreoasis"
+
+git_user_ui: "{{ git_user }}"
+git_repo_ui: OasisUI
+git_version_ui: "{{ version }}"
+
+git_user_api: "{{ git_user }}"
+git_repo_api: OasisPlatform
+git_version_api: "{{ version }}"
+
+git_user_piwind: "{{ git_user }}"
+git_repo_piwind: OasisPiWind
+git_version_piwind: "{{ version }}"
+
+docker_network: "shiny-net"
+
+docker_usr_api_server: "{{ docker_user }}"
+docker_img_api_server: "api_server"
+docker_tag_api_server: "{{ version }}"
+
+docker_usr_model_worker: "{{ docker_user }}"
+docker_img_model_worker: "model_worker"
+docker_tag_model_worker: "{{ version }}"
+
+docker_usr_oasisui_app: "{{ docker_user }}"
+docker_img_oasisui_app: "oasisui_app"
+docker_tag_oasisui_app: "{{ version }}"
+
+docker_usr_oasisui_proxy: "{{ docker_user }}"
+docker_img_oasisui_proxy: "oasisui_proxy"
+docker_tag_oasisui_proxy: "{{ version }}"
+```
