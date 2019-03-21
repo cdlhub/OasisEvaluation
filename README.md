@@ -22,7 +22,8 @@ Running the install script from this repository automates install process of the
 * [Vagrant](https://www.vagrantup.com/) is used for test or development environment.
 * [Ansible](https://www.ansible.com/) serves as the provisioning tool. It is not available on Windows. However, the solution provides a Linux virtual machine with Ansible installed.
 
-## Cloud Provisioning 
+## Cloud Provisioning
+
 PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of the models hosted on the platform. 
 
 * For running in AWS EC2 we recommend a a medium sized general purpose Instance such as *T2.medium* or larger 
