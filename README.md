@@ -1,6 +1,6 @@
 <img src="https://oasislmf.org/packages/oasis_theme_package/themes/oasis_theme/assets/src/oasis-lmf-colour.png" alt="Oasis LMF logo" width="250"/>
 
-# Oasis Evaluation 1.0.0 Release
+# Oasis Evaluation 1.0.0 Release 
 
 The Oasis Platform 1.0.0 release includes a full API for operating catastrophe models and a general consolidation of the platform architecture.
 Windows SQL server is no longer a strict requirement.
@@ -11,35 +11,16 @@ A Linux based installation is the main focus of this example Evaluation deployme
 Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
 
 ## Install Prerequisites
-
-### Oasis host or server
-
 * Host Operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
-* For this example we’ve used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script.
+* For this example we’ve used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script
 
-### Control machine to provision Oasis server
-
-* [Vagrant](https://www.vagrantup.com/) is used for test or development environment.
-* [Ansible](https://www.ansible.com/) serves as the provisioning tool. It is not available on Windows. However, the solution provides a Linux virtual machine with Ansible installed.
-
-## Cloud Provisioning
-
+## Cloud Provisioning 
 PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of the models hosted on the platform. 
 
 * For running in AWS EC2 we recommend a a medium sized general purpose Instance such as *T2.medium* or larger 
 * To host on Azure use a *Standard_B2s* or larger instance 
   
 ## Installation Steps
-
-From within Oasis server using Ansible (compatible with Debian, Ubuntu, CentOS, RedHat):
-
-```sh
-git clone git@github.com:OasisLMF/OasisEvaluation.git
-cd OasisEvaluation
-ansible-playbook --connection=local --inventory 127.0.0.1, playbook.yml
-```
-
-From within Oasis server using `install.sh` shell script (compatible with Linux):
 
 1) install git, docker and docker-compose
 
