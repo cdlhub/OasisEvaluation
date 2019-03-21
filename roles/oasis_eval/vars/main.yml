@@ -8,9 +8,9 @@ git_user_ui: "{{ git_user }}"
 git_repo_ui: OasisUI
 git_version_ui: "{{ version }}"
 
-git_user_api: cdlhub
+git_user_api: "{{ git_user }}"
 git_repo_api: OasisPlatform
-git_version_api: "add-restart-always"
+git_version_api: "{{ version }}"
 
 git_user_piwind: "{{ git_user }}"
 git_repo_piwind: OasisPiWind
