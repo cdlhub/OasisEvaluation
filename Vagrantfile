@@ -33,13 +33,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     centos.vm.provider "virtualbox" do |vb|
         vb.name = "OASIS_CENTOS"
     end
-    centos.vm.provision "ansible" do |ansible|
-        ansible.compatibility_mode = "2.0"
-        ansible.playbook = "playbook.yml"
-        # ansible.verbose = true
-        ansible.inventory_path = "staging-centos"
-        ansible.limit = 'all'
-    end
+    # centos.vm.provision "ansible" do |ansible|
+    #     ansible.compatibility_mode = "2.0"
+    #     ansible.playbook = "playbook-upgrade.yml"
+    #     # ansible.verbose = true
+    #     ansible.inventory_path = "staging-centos"
+    #     ansible.limit = 'all'
+    # end
   end
 
   config.vm.define "oasis-ubuntu", autostart: false do |ubuntu|
@@ -52,13 +52,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ubuntu.vm.provider "virtualbox" do |vb|
         vb.name = "OASIS_UBUNTU"
     end
-    ubuntu.vm.provision "ansible" do |ansible|
-      ansible.compatibility_mode = "2.0"
-      ansible.playbook = "playbook.yml"
-      # ansible.verbose = true
-      ansible.inventory_path = "staging-ubuntu"
-      ansible.limit = 'all'
-    end
+    # ubuntu.vm.provision "ansible" do |ansible|
+    #   ansible.compatibility_mode = "2.0"
+    #   ansible.playbook = "playbook-upgrade.yml"
+    #   # ansible.verbose = true
+    #   ansible.inventory_path = "staging-ubuntu"
+    #   ansible.limit = 'all'
+    # end
   end
 
   # VirtualBox configuration
