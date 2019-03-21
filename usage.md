@@ -47,13 +47,13 @@ The solution can be used from a Windows, macOS, or Linux control machine. You ca
     cd OasisEvaluation
     ```
 
-1. Upgrade your system (optional).
+1. Upgrade your system (don't miss the comma after IP address).
 
     ```sh
     ansible-playbook --connection=local --inventory 127.0.0.1, playbook-upgrade.yml
     ```
 
-1. Install Oasis components.
+1. Install Oasis components (don't miss the comma after IP address).
 
     ```sh
     ansible-playbook --connection=local --inventory 127.0.0.1, playbook.yml
